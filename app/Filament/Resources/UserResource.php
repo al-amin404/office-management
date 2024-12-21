@@ -18,7 +18,7 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
     protected static ?string $navigationGroup = 'Access Management';
 
-    protected static ?string $navigationIcon = 'heroicon-o-user';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
     {
@@ -30,16 +30,17 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
-                    ->unique()
+                    ->unique('users', 'email')
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->hiddenOn('edit'),
                 Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')
-                    ->preload(),
+                    ->preload()
+                    ->native(false),
             ]);
     }
 
